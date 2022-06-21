@@ -8,7 +8,7 @@
 
 // A struct to represent an adjacenct list node in the graph
 typedef struct adj_list_node {
-    int vertex;
+    int node;
     struct adj_list_node *next;
 } adj_list_node;
 
@@ -27,7 +27,7 @@ typedef struct undirected_graph {
 
 
 // Creates a new adjacency list node
-adj_list_node *create_adj_list_node(int vertex);
+adj_list_node *create_adj_list_node(int node);
 
 // Creates a graph with the given number of nodes and no arcs
 undirected_graph *create_undirected_graph(int size);
