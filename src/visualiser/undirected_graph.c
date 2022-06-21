@@ -86,12 +86,16 @@ bool has_arc(undirected_graph *graph, int source, int target) {
     assert(source >= 0);
     assert(source < graph->size);
     assert(target >= 0);
+    
+    bool source_has_target = false;
+    bool target_has_source = false;
 
     // Check if the target node is in the source node's adjacency list
     adj_list_node *current_node = graph->adj_list[source].head;
     while (current_node != NULL) {
         if (current_node->node == target) {
-            return true;
+            target_has_source = true;
+            break;
         }
         current_node = current_node->next;
     }
@@ -100,10 +104,12 @@ bool has_arc(undirected_graph *graph, int source, int target) {
     current_node = graph->adj_list[target].head;
     while (current_node != NULL) {
         if (current_node->node == source) {
-            return true;
+            source_has_target = true;
+            break;
         }
         current_node = current_node->next;
     }
+    return source_has_target && target_has_source;
 }
 
 void free_undirected_graph(undirected_graph *graph) {
@@ -123,4 +129,16 @@ int get_degree(undirected_graph *graph, int vertex) {
     assert(vertex >= 0);
     assert(vertex < graph->size);
     return graph->adj_list[vertex].size;
+}
+
+void print_undirected_graph_adj_list(undirected_graph *graph) {
+    for (int i = 0; i < graph->size; i++) {
+        adj_list_node *current_node = graph->adj_list[i].head;
+        printf("%d: ", i);
+        while (current_node != NULL) {
+            printf("-> %d ", current_node->node);
+            current_node = current_node->next;
+        }
+        printf("\n");
+    }
 }

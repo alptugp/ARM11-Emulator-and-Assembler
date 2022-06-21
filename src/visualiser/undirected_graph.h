@@ -50,4 +50,7 @@ void free_undirected_graph(undirected_graph *graph);
 // Returns the degree of a node 
 int get_degree(undirected_graph *graph, int vertex);
 
+// Prints the adjacency list of the graph
+void print_undirected_graph_adj_list(undirected_graph *graph);
+
 #endif
