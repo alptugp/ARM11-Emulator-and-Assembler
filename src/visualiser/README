@@ -1,0 +1,19 @@
+WORK TO DO FOR EACH ALGORITHM
+Each graph algorithm will have a separate directory.
+Inside the directory there should be 3 functions defined:
+    1. An INITIALISER function, eg graph_union_t dijkstra_initialise().
+    Interactively initialises the graph, initialises a graph union, then assigns
+    the graph to the graph union and returns the graph union.
+    2. A ONE STEP function, eg int dijkstra_one_step(graph_union_t *graph_union).
+    Takes in the graph union by pointer, performs one step of the algorithm on it,
+    modifies the graph union.
+    Returns 0 if we should continue, 1 if we should terminate.
+    3. A VISUALISER function, eg dijkstra_visualise(graph_union_t graph_union).
+    Takes in the graph union and visualises the appropriate graph.
+
+NB
+Some algorithms may have common initialiser and/or visualiser functions.
+In that case, only define initialiser and visualiser functions for one of the
+algorithms; main() will handle the rest by assiging the initialiser and visualiser
+function pointers for all such algorithms to the common initialiser/visualiser
+functions.
