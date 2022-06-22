@@ -1,10 +1,17 @@
 #ifndef UTILS
 #define UTILS
 
+#include <stdbool.h>
+#include "undirected_graph.h"
+
 #define ALGO_NAME_MAX_LENGTH 0
+#define MAX_SIZE 0
+#define MAX_MATRIX_SIZE 0
+#define NUM_VISITED_ARCS 0
 
 typedef union graph_union_t {
     // PUT GRAPH REPRESENTATION STRUCTS HERE
+    undirected_graph_t undirected_graph;
 } graph_union_t;
 
 // Pointer to a function that initialises an algorithm-specific graph
@@ -20,6 +27,9 @@ typedef int (*one_step_t)(graph_union_t*);
 
 // Pointer to a function that visualises an algorithm-specific graph,
 // which is passed as a member of the graph_repr union.
-typedef void (*visualise_t)(graph_union_t);
+// Returns true iff we should terminate immediately.
+typedef bool (*visualise_t)(graph_union_t);
+
+void strip_trailing_newline(char *str);
 
 #endif

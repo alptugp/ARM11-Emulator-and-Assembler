@@ -1,6 +1,8 @@
 #include "undirected_graph.h"
+#include "utils.h"
 #include <assert.h>
 
+/*
 adj_list_node *create_adj_list_node(int node) {
     adj_list_node *new_node = malloc(sizeof(adj_list_node));
     new_node->node = node;
@@ -8,9 +10,9 @@ adj_list_node *create_adj_list_node(int node) {
     return new_node;
 }
 
-undirected_graph *create_undirected_graph(int size) {
+undirected_graph_t *create_undirected_graph(int size) {
     // Allocate memory for the graph
-    undirected_graph *new_graph = malloc(sizeof(undirected_graph));
+    undirected_graph_t *new_graph = malloc(sizeof(undirected_graph_t));
 
     // Initialise the graph
     new_graph->size = size;
@@ -24,7 +26,7 @@ undirected_graph *create_undirected_graph(int size) {
     return new_graph;
 }
 
-void add_arc(undirected_graph *graph, int source, int target) {
+void add_arc(undirected_graph_t *graph, int source, int target) {
     assert(source >= 0);
     assert(source < graph->size);
     assert(target >= 0);
@@ -69,7 +71,7 @@ void add_arc(undirected_graph *graph, int source, int target) {
 
 }
 
-int get_num_arcs(undirected_graph *graph) {
+int get_num_arcs(undirected_graph_t *graph) {
     int num_arcs = 0;
     for (int i = 0; i < graph->size; i++) {
         num_arcs += graph->adj_list[i].size;
@@ -78,11 +80,11 @@ int get_num_arcs(undirected_graph *graph) {
     return num_arcs / 2;
 }
 
-int get_num_nodes(undirected_graph *graph) {
+int get_num_nodes(undirected_graph_t *graph) {
     return graph->size;
 }
 
-bool has_arc(undirected_graph *graph, int source, int target) {
+bool has_arc(undirected_graph_t *graph, int source, int target) {
     assert(source >= 0);
     assert(source < graph->size);
     assert(target >= 0);
@@ -112,7 +114,7 @@ bool has_arc(undirected_graph *graph, int source, int target) {
     return source_has_target && target_has_source;
 }
 
-void free_undirected_graph(undirected_graph *graph) {
+void free_undirected_graph(undirected_graph_t *graph) {
     for (int i = 0; i < graph->size; i++) {
         adj_list_node *current_node = graph->adj_list[i].head;
         while (current_node != NULL) {
@@ -125,13 +127,13 @@ void free_undirected_graph(undirected_graph *graph) {
     free(graph);
 }
 
-int get_degree(undirected_graph *graph, int vertex) {
+int get_degree(undirected_graph_t *graph, int vertex) {
     assert(vertex >= 0);
     assert(vertex < graph->size);
     return graph->adj_list[vertex].size;
 }
 
-void print_undirected_graph_adj_list(undirected_graph *graph) {
+void print_undirected_graph_adj_list(undirected_graph_t *graph) {
     for (int i = 0; i < graph->size; i++) {
         adj_list_node *current_node = graph->adj_list[i].head;
         printf("%d: ", i);
@@ -141,4 +143,19 @@ void print_undirected_graph_adj_list(undirected_graph *graph) {
         }
         printf("\n");
     }
+}
+*/
+
+undirected_graph_t initialise_undirected(void) {
+    char size[MAX_SIZE];
+    fgets(size, MAX_SIZE, stdin);
+
+    char adj_matrix[MAX_MATRIX_SIZE][MAX_MATRIX_SIZE];
+    fgets(adj_matrix[MAX_MATRIX_SIZE], sizeof(*adj_matrix), stdin);
+
+    fgets(num_visited_arcs, NUM_VISITED_ARCS, stdin);
+
+    
+    
+
 }
