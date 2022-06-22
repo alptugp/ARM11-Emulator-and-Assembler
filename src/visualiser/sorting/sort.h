@@ -11,16 +11,28 @@ int get_int_array_size(int *array);
 // Prints an array of integers 
 void print_int_array(int *array);
 
-// A function to get an integer array from the user by reading command line input
-// Should ask for the size of the array and then ask for the elements of the array
-// Should return the array
-// Should check for errors in the input, e.g. if the user enters a non-integer, or an integer that is too large
-// Should throw an error and exit if the user enters invalid input
-
+// Gets an integer array from the user 
 int *get_int_array(void);
 
-// A function to perform bubble sort on an array of integers, and show each step of the sort, explain what is happening
-// and the final sorted array
-// and should print the number of steps required to sort the array
-// Should return the final sorted array
+// Visualises the bubble sort algorithm
+// Print the number of steps required to sort the array
+// Returns the final sorted array
 int *bubble_sort_visualiser(int *array);
+
+// The partition function used in quick sort
+int partition(int* array, int start, int end)
+
+// Visualise the quick sort algorithm
+// Prints the number of steps required to sort the array and the final sorted array
+// Returns the final sorted array
+int *insertion_sort_visualiser(int *array);
+
+// Pivot function used in quick sort
+// Takes the last element as the pivot, and moves all elements less than the pivot to the left of the pivot,
+// and all elements greater than the pivot to the right of the pivot
+int pivot(int* array, int start, int end);
+
+// Visualises the selection sort algorithm
+// Prints the number of steps required to sort the array and the final sorted array
+// Returns the final sorted array
+int *selection_sort_visualiser(int *array);
