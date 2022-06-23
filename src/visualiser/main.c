@@ -1,6 +1,8 @@
 #include "utils.h"
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 
 static void initialise_algorithm(initialise_t *initialise, one_step_t *one_step, visualise_t *visualise) {
@@ -19,6 +21,8 @@ static void initialise_algorithm(initialise_t *initialise, one_step_t *one_step,
 }
 
 int main() {
+    srand(time(NULL));
+
     initialise_t initialise;
     one_step_t one_step;
     visualise_t visualise;
