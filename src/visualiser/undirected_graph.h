@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "utils.h"
 
 // A struct to represent an adjacenct list node in the graph
 typedef struct undirected_node {
@@ -15,7 +14,7 @@ typedef struct undirected_node {
 typedef struct undirected_arc {
     undirected_node source;
     undirected_node target;
-    undirected_arc *next_in_list;
+    struct undirected_arc *next_in_list;
 } undirected_arc;
 
 /*
@@ -35,6 +34,7 @@ typedef struct undirected_graph_t {
     int **adj_matrix;
     bool *visited;
     undirected_node *node_arr;
+    undirected_node *parent_arr;
 } undirected_graph_t;
 
 
@@ -64,5 +64,7 @@ int get_degree(undirected_graph_t *graph, int vertex);
 
 // Prints the adjacency list of the graph
 void print_undirected_graph_adj_list(undirected_graph_t *graph);
+
+undirected_graph_t initialise_undirected(void);
 
 #endif
