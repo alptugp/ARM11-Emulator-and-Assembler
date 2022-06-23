@@ -11,7 +11,7 @@ all:	$(BUILD)
 main:	main.o
 
 test:	$(TEST_DEPENDENCIES)
-	gcc $(CFLAGS) $(TEST_DEPENDENCIES) -o test
+	$(CC) $(CFLAGS) $(TEST_DEPENDENCIES) -o test
 
 #libs:
 #	$(foreach lib, $(LIBS), cd $(lib); make; cd ..;)

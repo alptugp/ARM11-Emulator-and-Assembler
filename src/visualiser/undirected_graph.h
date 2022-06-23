@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+#define INITIAL_PARENT -1
+
 // A struct to represent an adjacenct list node in the graph
 typedef struct undirected_node {
     int index;
@@ -35,6 +37,7 @@ typedef struct undirected_graph_t {
     bool *visited;
     undirected_node *node_arr;
     undirected_node *parent_arr;
+    undirected_node start_node;
 } undirected_graph_t;
 
 

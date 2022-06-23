@@ -2,6 +2,7 @@
 #define UTILS
 
 #include <stdbool.h>
+#include <assert.h>
 #include "undirected_graph.h"
 
 #define ALGO_NAME_MAX_LENGTH 0
