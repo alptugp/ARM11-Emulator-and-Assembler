@@ -13,6 +13,9 @@
 #define HORIZONTAL_ARC_CHAR '-'
 #define VERTICAL_ARC_CHAR '|'
 #define HORIZONTAL_AND_VERTICAL_ARC_CHAR '+'
+#define MILLIS_TO_SECONDS 1000
+#define COLOUR_ESCAPE "\033[22;34m"
+#define COLOUR_END "\033[0m" // To flush out prev settings
 
 typedef struct location {
     int row;
@@ -28,6 +31,8 @@ typedef struct grid {
 typedef struct arc_segment {
     location_t start_pt;
     location_t end_pt;
+    int arc_source_index;
+    int arc_target_index;
 } arc_segment_t;
 
 bool dfs_visualise(graph_union_t graph_union);
