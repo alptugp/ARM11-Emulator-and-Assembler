@@ -1,34 +1,43 @@
 #include "utils.h"
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
-void strip_trailing_newline(char *str) {
-    for(int i = 0; str[i] != '\0'; i++) {
-        if(str[i] == '\n') {
-            str[i] = '\0';
-            return str;
-        }
+
+static void initialise_algorithm(initialise_t *initialise, one_step_t *one_step, visualise_t *visualise) {
+    printf("Enter an algorithm you wish to explore.\n");
+    printf("The currently supported algorithms are: '%s'\n", "DFS");
+    char algo_name[ALGO_NAME_MAX_LENGTH];
+    fgets(algo_name, sizeof(algo_name), stdin);
+    strip_trailing_newline(algo_name);
+    if(strcmp(algo_name, "DFS") == 0) {
+        initialise = &initialise_undirected;
     }
-    return str;
+    else {
+        printf("Not a valid algorithm name.\n");
+        initialise_algorithm(initialise, one_step, visualise);
+    }
 }
 
 int main() {
+    srand(time(NULL));
+
     initialise_t initialise;
     one_step_t one_step;
     visualise_t visualise;
 
-    char buffer[ALGO_NAME_MAX_LENGTH];
-    fgets(buffer, sizeof(buffer), stdin);
-    strip_trailing_newline(buffer);
-    // TODO USE STRCMP TO SELECT ALGORITHM AND INITIALISE 3X FUNC PTRS
+    initialise_algorithm(&initialise, &one_step, &visualise);
 
     graph_union_t graph_union = (*initialise)();
 
     int terminate = 0;
     while (!terminate) {
         terminate = (*one_step)(&graph_union);
-        (*visualise)(graph_union);
+        terminate |= (*visualise)(graph_union);
     }
     
+    printf("Exiting.\n");
+
     return 0;
 }
