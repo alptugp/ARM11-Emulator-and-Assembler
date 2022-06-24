@@ -33,7 +33,8 @@ int dfs_one_step(graph_union_t *graph_union) {
        return 0;
     }
 
-    // There are no unvisited adjacent nodes to current node: backtrack
+    // There are no unvisited adjacent nodes to current node
+    // Backtrack
     graph->current_node = graph->parent_arr[graph->current_node.index];
     if(graph->current_node.index == 0) {
         return 1;

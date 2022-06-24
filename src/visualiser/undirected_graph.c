@@ -4,10 +4,6 @@
 #include <assert.h>
 #include <stdio.h>
 
-undirected_graph_t undirected_initialise(void) {
-    return undirected_initialise_helper(false, "");
-}
-
 undirected_graph_t undirected_initialise_helper(bool open_from_file, char filename[]) {
     FILE *test_file;
     if(open_from_file) {
@@ -44,22 +40,27 @@ undirected_graph_t undirected_initialise_helper(bool open_from_file, char filena
                 undirected_graph.adj_matrix[row][col] = undirected_graph.adj_matrix[col][row];
             }
             else {
-                printf("Is there an arc between the nodes with indices %d and %d? (Y/N)\n", row, col);
-                char *answer;
-                if(open_from_file) {
-                    str_file_in(&answer, test_file);
+                bool inputted_successfully = false;
+                while(!inputted_successfully) {
+                    printf("Is there an arc between the nodes with indices %d and %d? (Y/N)\n", row, col);
+                    char *answer;
+                    if(open_from_file) {
+                        str_file_in(&answer, test_file);
+                    }
+                    else {
+                        str_stdin(&answer);
+                    }
+                    if (strcmp(answer, "Y") == 0) {
+                        undirected_graph.adj_matrix[row][col] = 1;
+                        inputted_successfully = true;
+                    } else if (strcmp(answer, "N") == 0) {
+                        undirected_graph.adj_matrix[row][col] = 0;
+                        inputted_successfully = true;
+                    } else {
+                        printf("Please enter Y/N.\n");
+                    }
+                    free(answer);
                 }
-                else {
-                    str_stdin(&answer);
-                }
-                if (strcmp(answer, "Y") == 0) {
-                    undirected_graph.adj_matrix[row][col] = 1;
-                } else if (strcmp(answer, "N") == 0) {
-                    undirected_graph.adj_matrix[row][col] = 0;
-                } else {
-                    printf("Please enter Y/N.\n");
-                }
-                free(answer);
             }
         }
     }

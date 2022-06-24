@@ -1,3 +1,8 @@
+#ifndef DFS_VISUALISE
+#define DFS_VISUALISE
+
+#include "utils.h"
+
 #define NODE_WIDTH 1
 #define NODE_HEIGHT 1
 #define EMPTY ' '
@@ -7,6 +12,7 @@
 #define MIN_NODE_GAP 2
 #define HORIZONTAL_ARC_CHAR '-'
 #define VERTICAL_ARC_CHAR '|'
+#define HORIZONTAL_AND_VERTICAL_ARC_CHAR '+'
 
 typedef struct location {
     int row;
@@ -23,3 +29,7 @@ typedef struct arc_segment {
     location_t start_pt;
     location_t end_pt;
 } arc_segment_t;
+
+bool dfs_visualise(graph_union_t graph_union);
+
+#endif

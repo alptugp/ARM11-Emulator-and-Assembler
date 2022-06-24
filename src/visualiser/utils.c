@@ -22,3 +22,9 @@ void str_file_in(char **buffer_ptr, FILE *fp) {
     fgets(*buffer_ptr, USER_IN_MAX_LENGTH, fp);
     strip_trailing_newline(*buffer_ptr);
 }
+
+graph_union_t undirected_initialise(void) {
+    graph_union_t new_union;
+    new_union.undirected_graph = undirected_initialise_helper(true, "test_in_normal1.txt");
+    return new_union;
+}

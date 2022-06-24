@@ -37,4 +37,6 @@ void str_stdin(char **buffer_ptr);
 
 void str_file_in(char **buffer_ptr, FILE *fp);
 
+graph_union_t undirected_initialise(void);
+
 #endif

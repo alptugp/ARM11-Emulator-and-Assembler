@@ -40,7 +40,6 @@ typedef struct undirected_graph_t {
     undirected_node start_node;
 } undirected_graph_t;
 
-undirected_graph_t undirected_initialise(void);
 
 undirected_graph_t undirected_initialise_helper(bool open_from_file, char filename[]);
 

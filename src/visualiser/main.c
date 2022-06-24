@@ -1,5 +1,6 @@
 #include "utils.h"
 #include "dfs_one_step.h"
+#include "visualise_dfs.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,10 +10,11 @@ static void initialise_algorithm(initialise_t *initialise, one_step_t *one_step,
     printf("Enter an algorithm you wish to explore.\n");
     printf("The currently supported algorithms are: '%s'\n", "DFS");
     char *algo_name;
-    str_stdin(algo_name);
+    str_stdin(&algo_name);
     if(strcmp(algo_name, "DFS") == 0) {
-        initialise = &undirected_initialise;
-        one_step = &dfs_one_step;
+        *initialise = undirected_initialise;
+        *one_step = dfs_one_step;
+        *visualise = dfs_visualise;
     }
     else {
         printf("Not a valid algorithm name.\n");
@@ -34,8 +36,8 @@ int main() {
 
     int terminate = 0;
     while (!terminate) {
-        terminate = (*one_step)(&graph_union);
         terminate |= (*visualise)(graph_union);
+        terminate |= (*one_step)(&graph_union);
     }
     
     printf("Exiting.\n");
