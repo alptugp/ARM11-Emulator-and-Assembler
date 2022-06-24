@@ -1,5 +1,6 @@
 #include "undirected_graph.h"
 #include "visualise_dfs.h"
+#include "utils.h"
 #include <string.h>
 #include <stdbool.h>
 #include <time.h>
@@ -142,13 +143,12 @@ static void animate_traversal(undirected_graph_t graph, long animation_delay) {
     // Allows user to request redraws in case graph is unclear
     undirected_arc arcs_to_colour[graph.num_visited_arcs];
     int arcs_to_colour_index = 0;
-    char redraw_input[USER_IN_MAX_LENGTH] = "Y";
+    char redraw_input[1] = "Y";
     do {
         draw_arcs(graph, &grid, arc_segments, num_arc_segments, arcs_to_colour, arcs_to_colour_index);
         print_grid(grid);
         printf("Redraw graph with nodes, arcs in different position? (Y or N) ");
-        fgets(redraw_input, sizeof(redraw_input), stdin);
-        strip_trailing_newline(redraw_input);
+        str_stdin(redraw_input);
     } while(strcmp(redraw_input, "Y") == 0);
 
 
@@ -178,16 +178,14 @@ bool dfs_visualise(graph_union_t graph_union) {
         printf("'ANIMATE' displays the graph in text-graphical form, and then colours each visited arc in turn.\n");
         printf("'NEXT' proceeds to the next step of the algorithm, or terminates if we are finished.\n");
         printf("'EXIT' quits immediately.\n");
-        char user_choice[USER_IN_MAX_LENGTH];
-        fgets(user_choice, sizeof(user_choice), stdin);
-        strip_trailing_newline(user_choice);
+        char *user_choice;
+        str_stdin(user_choice);
         if(strcmp(user_choice, "PRINT") == 0) {
             print_traversal(graph);
         }
         else if(strcmp(user_choice, "ANIMATE") == 0) {
-            char animation_delay[USER_IN_MAX_LENGTH];
-            fgets(animation_delay, sizeof(animation_delay), stdin);
-            strip_trailing_newline(animation_delay);
+            char *animation_delay;
+            str_stdin(animation_delay);
             char *dummy_ptr;
             animate_traversal(graph, strtol(animation_delay, &dummy_ptr, 10));
         }

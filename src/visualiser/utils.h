@@ -5,7 +5,7 @@
 #include <assert.h>
 #include "undirected_graph.h"
 
-#define ALGO_NAME_MAX_LENGTH 0
+#define USER_IN_MAX_LENGTH 500
 #define MAX_SIZE 0
 #define MAX_MATRIX_SIZE 0
 #define NUM_VISITED_ARCS 0
@@ -17,7 +17,7 @@ typedef union graph_union_t {
 
 // Pointer to a function that initialises an algorithm-specific graph
 // and returns it as part of a graph_repr union
-typedef graph_union_t (*initialise_t)();
+typedef graph_union_t (*initialise_t)(void);
 
 // Pointer to a function that executes one step of a specific algorithm
 // on a graph.
@@ -32,5 +32,9 @@ typedef int (*one_step_t)(graph_union_t*);
 typedef bool (*visualise_t)(graph_union_t);
 
 void strip_trailing_newline(char *str);
+
+void str_stdin(char **buffer_ptr);
+
+void str_file_in(char **buffer_ptr, FILE *fp);
 
 #endif

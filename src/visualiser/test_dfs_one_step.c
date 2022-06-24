@@ -2,7 +2,7 @@
 #include "utils.h"
 #include <assert.h>
 
-static void test_initializer(undirected_graph_t *undirected_graph, int num_nodes, int adj_matrix[num_nodes][num_nodes]) {
+static void initialise_test(undirected_graph_t *undirected_graph, int num_nodes, int adj_matrix[num_nodes][num_nodes]) {
     undirected_graph->num_nodes = num_nodes;
 
     undirected_graph->node_arr = malloc(num_nodes * sizeof(undirected_node));
@@ -60,7 +60,7 @@ void normal_graph_1_dfs_test() {
 
     int adj_matrix[num_nodes][num_nodes];
 
-    test_initializer(undirected_graph, num_nodes, adj_matrix);
+    initialise_test(undirected_graph, num_nodes, adj_matrix);
 
     adj_matrix[0][1] = 1;
     adj_matrix[1][0] = 1;
@@ -122,7 +122,7 @@ void unconnected_graph_dfs_test() {
 
     int adj_matrix[num_nodes][num_nodes];
 
-    test_initializer(undirected_graph, num_nodes, adj_matrix);
+    initialise_test(undirected_graph, num_nodes, adj_matrix);
 
     adj_matrix[0][1] = 1;
     adj_matrix[1][0] = 1;
@@ -138,7 +138,6 @@ void unconnected_graph_dfs_test() {
 
     adj_matrix[3][4] = 1;
     adj_matrix[4][3] = 1;
-
     copy_adj_matrix(undirected_graph, num_nodes, adj_matrix);
 
     graph_union_t *undirected_graph_union = malloc(sizeof(graph_union_t));
@@ -148,7 +147,6 @@ void unconnected_graph_dfs_test() {
 
 
     undirected_graph_t graph_after_dfs = undirected_graph_union->undirected_graph;
-    int current_node_index_after_dfs = 4;
 
     // assert(graph_after_dfs.current_node.index == current_node_index_after_dfs);
     assert(graph_after_dfs.num_nodes == num_nodes);
@@ -177,7 +175,7 @@ void complete_graph_dfs_test() {
 
     int adj_matrix[num_nodes][num_nodes];
 
-    test_initializer(undirected_graph, num_nodes, adj_matrix);
+    initialise_test(undirected_graph, num_nodes, adj_matrix);
 
     adj_matrix[0][1] = 1;
     adj_matrix[1][0] = 1;
@@ -205,7 +203,6 @@ void complete_graph_dfs_test() {
     while(!dfs_one_step(undirected_graph_union)) {}
 
     undirected_graph_t graph_after_dfs = undirected_graph_union->undirected_graph;
-    int current_node_index_after_dfs = 3;
 
     // assert(graph_after_dfs.current_node.index == current_node_index_after_dfs);
     assert(graph_after_dfs.num_nodes == num_nodes);
@@ -231,7 +228,7 @@ void normal_graph_2_dfs_test() {
 
     int adj_matrix[num_nodes][num_nodes];
 
-    test_initializer(undirected_graph, num_nodes, adj_matrix);
+    initialise_test(undirected_graph, num_nodes, adj_matrix);
 
     adj_matrix[0][1] = 1;
     adj_matrix[1][0] = 1;
@@ -268,7 +265,6 @@ void normal_graph_2_dfs_test() {
     while(!dfs_one_step(undirected_graph_union)) {}
 
     undirected_graph_t graph_after_dfs = undirected_graph_union->undirected_graph;
-    int current_node_index_after_dfs = 7;
 
     // assert(graph_after_dfs.current_node.index == current_node_index_after_dfs);
     assert(graph_after_dfs.num_nodes == num_nodes);
@@ -306,7 +302,7 @@ void singleton_graph_dfs_test() {
 
     int adj_matrix[num_nodes][num_nodes];
 
-    test_initializer(undirected_graph, num_nodes, adj_matrix);
+    initialise_test(undirected_graph, num_nodes, adj_matrix);
 
     copy_adj_matrix(undirected_graph, num_nodes, adj_matrix);
 
@@ -316,7 +312,6 @@ void singleton_graph_dfs_test() {
     while(!dfs_one_step(undirected_graph_union)) {}
 
     undirected_graph_t graph_after_dfs = undirected_graph_union->undirected_graph;
-    int current_node_index_after_dfs = 0;
 
     // assert(graph_after_dfs.current_node.index == current_node_index_after_dfs);
     assert(graph_after_dfs.num_nodes == num_nodes);
@@ -334,4 +329,5 @@ int main() {
     singleton_graph_dfs_test();
     unconnected_graph_dfs_test();
     complete_graph_dfs_test();
+    printf("ALL TESTS PASS.\n");
 }

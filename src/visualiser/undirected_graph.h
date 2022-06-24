@@ -40,34 +40,10 @@ typedef struct undirected_graph_t {
     undirected_node start_node;
 } undirected_graph_t;
 
+undirected_graph_t undirected_initialise(void);
 
-// Creates a new adjacency list node
-undirected_node *create_adj_list_node(int node);
+undirected_graph_t undirected_initialise_helper(bool open_from_file, char filename[]);
 
-// Creates a graph with the given number of nodes and no arcs
-undirected_graph_t *create_undirected_graph(int size);
-
-// Adds an arc between the two nodes
-void add_arc(undirected_graph_t *graph, int source, int target);
-
-// Returns the number of arcs in the graph
-int get_num_arcs(undirected_graph_t *graph);
-
-// Returns the number of nodes in the graph
-int get_num_nodes(undirected_graph_t *graph);
-
-// Returns 1 if arc between the two nodes exists, 0 otherwise
-bool has_arc(undirected_graph_t *graph, int source, int target);
-
-// Frees all memory allocated for the graph
-void free_undirected_graph(undirected_graph_t *graph);
-
-// Returns the degree of a node 
-int get_degree(undirected_graph_t *graph, int vertex);
-
-// Prints the adjacency list of the graph
-void print_undirected_graph_adj_list(undirected_graph_t *graph);
-
-undirected_graph_t initialise_undirected(void);
+void free_undirected_graph(undirected_graph_t *undirected_graph);
 
 #endif

@@ -1,4 +1,3 @@
-#define USER_IN_MAX_LENGTH 500
 #define NODE_WIDTH 1
 #define NODE_HEIGHT 1
 #define EMPTY ' '
