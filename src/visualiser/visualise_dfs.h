@@ -10,12 +10,12 @@
 #define NODE_CENTRE_TO_RIGHT 0
 #define MAX_SEGMENTS_PER_ARC 2
 #define MIN_NODE_GAP 2
+#define MILLIS_TO_SECONDS 1000
+#define COLOUR "\x1b[32m"
+#define COLOUR_RESET "\x1b[0m"
 #define HORIZONTAL_ARC_CHAR '-'
 #define VERTICAL_ARC_CHAR '|'
 #define HORIZONTAL_AND_VERTICAL_ARC_CHAR '+'
-#define MILLIS_TO_SECONDS 1000
-#define COLOUR_ESCAPE "\033[22;34m"
-#define COLOUR_END "\033[0m" // To flush out prev settings
 
 typedef struct location {
     int row;

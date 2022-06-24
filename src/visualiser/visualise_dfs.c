@@ -9,10 +9,14 @@ static void print_arc_segment(arc_segment_t arc_segment) {
     printf("target location row, col: %d, %d\n", arc_segment.end_pt.row, arc_segment.end_pt.col);
 }
 
-void print_grid(grid_t grid) {
+void print_grid(grid_t grid, bool **coloured_grid) {
     for(int row = 0; row < grid.height; row++) {
         for(int col = 0; col < grid.width; col++) {
+            if(coloured_grid[row][col]) {
+                printf(COLOUR);
+            }
             printf("%c", grid.chars[row][col]);
+            printf(COLOUR_RESET);
         }
         printf("\n");
     }
@@ -123,8 +127,15 @@ static int calc_all_arc_segs(undirected_graph_t graph, location_t *node_location
     return num_arc_segments;
 }
 
-static void draw_arcs(undirected_graph_t graph, grid_t *grid, arc_segment_t *arc_segments, int num_arc_segments, undirected_arc *arcs_to_colour, int num_arcs_to_colour) {
-    //  TODO add colours
+static bool **draw_arcs(undirected_graph_t graph, grid_t *grid, arc_segment_t *arc_segments, int num_arc_segments, undirected_arc *arcs_to_colour, int num_arcs_to_colour) {
+    bool **coloured_chars = malloc(sizeof(bool *) * grid->height);
+    for(int i = 0; i < grid->height; i++) {
+        coloured_chars[i] = malloc(sizeof(bool) * grid->width);
+        for(int j = 0; j < grid->width; j++) {
+            coloured_chars[i][j] = false;
+        }
+    }
+    
     for(int i = 0; i < num_arc_segments; i++) {
         arc_segment_t arc_segment = arc_segments[i];
 
@@ -139,10 +150,6 @@ static void draw_arcs(undirected_graph_t graph, grid_t *grid, arc_segment_t *arc
             curr = curr->next_in_list;
         }
 
-        if(to_colour) {
-            printf(COLOUR_ESCAPE);
-        }
-
         if(arc_segment.start_pt.row == arc_segment.end_pt.row) {
             assert(arc_segment.start_pt.col != arc_segment.end_pt.col);
             int row_index = arc_segment.start_pt.row;
@@ -152,9 +159,11 @@ static void draw_arcs(undirected_graph_t graph, grid_t *grid, arc_segment_t *arc
             for(int col_index = start_col + 1; col_index < end_col; col_index++) {
                 if(grid->chars[row_index][col_index] == VERTICAL_ARC_CHAR) {
                     grid->chars[row_index][col_index] = HORIZONTAL_AND_VERTICAL_ARC_CHAR;
+                    coloured_chars[row_index][col_index] = to_colour;
                 }
                 else if(grid->chars[row_index][col_index] == EMPTY) {
                     grid->chars[row_index][col_index] = HORIZONTAL_ARC_CHAR;
+                    coloured_chars[row_index][col_index] = to_colour;
                 }
             }
         }
@@ -168,15 +177,17 @@ static void draw_arcs(undirected_graph_t graph, grid_t *grid, arc_segment_t *arc
             for(int row_index = start_row + 1; row_index < end_row; row_index++) {
                 if(grid->chars[row_index][col_index] == HORIZONTAL_ARC_CHAR) {
                     grid->chars[row_index][col_index] = HORIZONTAL_AND_VERTICAL_ARC_CHAR;
+                    coloured_chars[row_index][col_index] = to_colour;
                 }
                 else if(grid->chars[row_index][col_index] == EMPTY) {
                     grid->chars[row_index][col_index] = VERTICAL_ARC_CHAR;
+                    coloured_chars[row_index][col_index] = to_colour;
                 }
             }
         }
-
-        printf(COLOUR_END);
     }
+
+    return coloured_chars;
 }
 
 static void clear_grid_arcs(grid_t *grid) {
@@ -190,7 +201,7 @@ static void clear_grid_arcs(grid_t *grid) {
 }
 
 // Draw the graph and then animate the traversal, by colouring each visited arc in turn.
-static void animate_traversal(undirected_graph_t graph, long animation_delay) {
+static void animate_traversal(undirected_graph_t graph) {
     // Initialise grid
     int height = graph.num_nodes * (NODE_HEIGHT + MIN_NODE_GAP * 2 + 2);
     int width = graph.num_nodes * (NODE_WIDTH + MIN_NODE_GAP * 2 + 2);
@@ -215,7 +226,14 @@ static void animate_traversal(undirected_graph_t graph, long animation_delay) {
 
         num_arc_segments = calc_all_arc_segs(graph, node_locations, arc_segments);
         draw_arcs(graph, &grid, arc_segments, num_arc_segments, arcs_to_colour, arcs_to_colour_index);
-        print_grid(grid);
+        bool **coloured_grid = malloc(sizeof(bool *) * grid.height);
+        for(int i = 0; i < grid.height; i++) {
+            coloured_grid[i] = malloc(sizeof(bool) * grid.width);
+            for(int j = 0; j < grid.width; j++) {
+                coloured_grid[i][j] = false;
+            }
+        }
+        print_grid(grid, coloured_grid);
         printf("Redraw graph with nodes, arcs in different position? (Y or N) ");
         str_stdin(&redraw_input);
     } while(strcmp(redraw_input, "Y") == 0); // Allow user to request redraws in case graph is unclear
@@ -225,12 +243,12 @@ static void animate_traversal(undirected_graph_t graph, long animation_delay) {
     while(curr) {
         clear_grid_arcs(&grid);
 
-        // system("clear");
+        //system("clear");
         arcs_to_colour[arcs_to_colour_index] = *curr;
-        draw_arcs(graph, &grid, arc_segments, num_arc_segments, arcs_to_colour, arcs_to_colour_index);
-        print_grid(grid);
-        clock_t finish = clock() + animation_delay * MILLIS_TO_SECONDS;
-        while(clock() < finish) {}
+        bool **coloured_chars = draw_arcs(graph, &grid, arc_segments, num_arc_segments, arcs_to_colour, arcs_to_colour_index);
+        print_grid(grid, coloured_chars);
+        //clock_t finish = clock() + animation_delay * MILLIS_TO_SECONDS;
+        //while(clock() < finish) {}
 
         arcs_to_colour_index++;
         curr = curr->next_in_list;
@@ -259,11 +277,7 @@ bool dfs_visualise(graph_union_t graph_union) {
             print_traversal(graph);
         }
         else if(strcmp(user_choice, "ANIMATE") == 0) {
-            printf("Enter delay between animation frames, in integer seconds:");
-            char *animation_delay;
-            str_stdin(&animation_delay);
-            char *dummy_ptr;
-            animate_traversal(graph, strtol(animation_delay, &dummy_ptr, 10));
+            animate_traversal(graph);
         }
         else if(strcmp(user_choice, "NEXT") == 0) {
             printf("Proceeding to next step of algorithm.\n");
