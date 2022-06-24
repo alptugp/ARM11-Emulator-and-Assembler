@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -g -Wall -pedantic -std=c99 # $(foreach lib, $(LIBS), -I$(lib))
+CFLAGS = -g -Wall -pedantic -std=c99 -fsanitize=undefined # $(foreach lib, $(LIBS), -I$(lib))
 #LIBS =
 LDFLAGS = $(CFLAGS)
 BUILD = visualiser

@@ -15,7 +15,10 @@ static void print_arc_segment(arc_segment_t arc_segment) {
 
 void print_grid(grid_t grid) {
     for(int row = 0; row < grid.height; row++) {
-        printf("%s\n", grid.chars[row]);
+        for(int col = 0; col < grid.width; col++) {
+            printf("%c", grid.chars[row][col]);
+        }
+        printf("\n");
     }
 }
 
@@ -40,16 +43,9 @@ static void print_traversal(undirected_graph_t graph) {
 static void write_node_to_grid(grid_t *grid, int node_index, int row_index, int col_index) {
     assert(row_index >= 0 && row_index + NODE_CENTRE_TO_RIGHT < grid->height);
     assert(col_index >= 0 && col_index + NODE_CENTRE_TO_BTM < grid->width);
-    /*
-    strcpy(&grid->chars[row_index - 1][col_index - 1], "| ¯ |");
-    char *second_line;
-    sprintf(second_line, "| %d |\n", node_index);
-    strcpy(&grid->chars[row_index][col_index - 1], second_line);
-    strcpy(&grid->chars[row_index + 1][col_index - 1], "| _ |");
-    */
-   char buf[2];
-   sprintf(buf, "%d", node_index);
-   strcpy(&grid->chars[row_index][col_index], buf);
+    char buf[2];
+    sprintf(buf, "%d", node_index);
+    grid->chars[row_index][col_index] = buf[0];
 }
 
 static void initialise_nodes(undirected_graph_t graph, grid_t *grid, location_t *node_locations) {
@@ -69,7 +65,6 @@ static void initialise_nodes(undirected_graph_t graph, grid_t *grid, location_t 
             int lower_bound_col = NODE_CENTRE_TO_RIGHT + MIN_NODE_GAP;
             int upper_bound_col = grid->width - 1 - lower_bound_col;
             col_index = (rand() % (upper_bound_col - lower_bound_col + 1)) + lower_bound_col;
-            printf("trying row index = %d, col index = %d\n", row_index, col_index);
             if(!occupied_squares[row_index][col_index]) {
                 break;
             }
@@ -139,8 +134,12 @@ static void draw_arcs(undirected_graph_t graph, grid_t *grid, arc_segment_t *arc
     for(int i = 0; i < num_arc_segments; i++) {
         arc_segment_t arc_segment = arc_segments[i];
         if(arc_segment.start_pt.row == arc_segment.end_pt.row) {
+            assert(arc_segment.start_pt.col != arc_segment.end_pt.col);
             int row_index = arc_segment.start_pt.row;
-            for(int col_index = arc_segment.start_pt.col; col_index < arc_segment.end_pt.col; col_index++) {
+            bool start_less_than_end = arc_segment.start_pt.col < arc_segment.end_pt.col;
+            int start_col = start_less_than_end ? arc_segment.start_pt.col : arc_segment.end_pt.col;
+            int end_col = start_less_than_end ? arc_segment.end_pt.col : arc_segment.start_pt.col;
+            for(int col_index = start_col + 1; col_index < end_col; col_index++) {
                 if(grid->chars[row_index][col_index] == VERTICAL_ARC_CHAR) {
                     grid->chars[row_index][col_index] = HORIZONTAL_AND_VERTICAL_ARC_CHAR;
                 }
@@ -152,7 +151,10 @@ static void draw_arcs(undirected_graph_t graph, grid_t *grid, arc_segment_t *arc
         else {
             assert(arc_segment.start_pt.col = arc_segment.end_pt.col);
             int col_index = arc_segment.start_pt.col;
-            for(int row_index = arc_segment.start_pt.row; row_index < arc_segment.end_pt.row; row_index++) {
+            bool start_less_than_end = arc_segment.start_pt.row < arc_segment.end_pt.row;
+            int start_row = start_less_than_end ? arc_segment.start_pt.row : arc_segment.end_pt.row;
+            int end_row = start_less_than_end ? arc_segment.end_pt.row : arc_segment.start_pt.row;
+            for(int row_index = start_row + 1; row_index < end_row; row_index++) {
                 if(grid->chars[row_index][col_index] == HORIZONTAL_ARC_CHAR) {
                     grid->chars[row_index][col_index] = HORIZONTAL_AND_VERTICAL_ARC_CHAR;
                 }
@@ -167,8 +169,8 @@ static void draw_arcs(undirected_graph_t graph, grid_t *grid, arc_segment_t *arc
 // Draw the graph and then animate the traversal, by colouring each visited arc in turn.
 static void animate_traversal(undirected_graph_t graph, long animation_delay) {
     // Initialise grid
-    int height = graph.num_nodes * (NODE_HEIGHT + MIN_NODE_GAP * 2);
-    int width = graph.num_nodes * (NODE_WIDTH + MIN_NODE_GAP * 2);
+    int height = graph.num_nodes * (NODE_HEIGHT + MIN_NODE_GAP * 2 + 2);
+    int width = graph.num_nodes * (NODE_WIDTH + MIN_NODE_GAP * 2 + 2);
     char **chars = malloc(sizeof(char *) * height);
     grid_t grid = {chars, height, width};
     for(int row_index = 0; row_index < grid.height; row_index++) {
